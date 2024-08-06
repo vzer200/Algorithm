@@ -1,6 +1,7 @@
 package sf;
 
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.comparator.Comparators;
 
 import java.util.*;
 
@@ -102,24 +103,16 @@ public class E56 {
 
     public int[][] merge4(int[][] intervals) {
         //合并区间
-        Arrays.sort(intervals, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[0]-o2[0];
-            }
-        });
-        int index= -1;
-        int[][] res = new int[intervals.length][2];
-        for (int[] interval : intervals) {
-            //如果结果数组的右端点小于当前数组的左端点 表示没有重叠区间 直接加入
-            if (index==-1||res[index][1]<interval[0]){
-                res[++index]= interval;
-            }else {
-                //表示有重叠区间
-                //从当前数组的右端点和结束数组的右端点取最大值
-                res[index][1] = Math.max(res[index][1],interval[1]);
-            }
+       Arrays.sort(intervals, (o1, o2) -> o1[0]-o2[0]);
 
+       int index = -1;
+       int[][] res = new int[intervals.length][2];
+        for (int[] interval : intervals) {
+            if(index==-1||res[index][1]<interval[0]){
+                res[++index] = interval;
+            }else{
+                res[++index][1] = Math.max(interval[1],res[index][1]);
+            }
         }
 
         return Arrays.copyOf(res,index+1);

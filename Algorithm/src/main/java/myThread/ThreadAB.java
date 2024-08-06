@@ -1,4 +1,4 @@
-package Aabs;
+package myThread;
 
 
 //问题描述：写三个线程打印 "ABC"，⼀个线程打印 A，⼀个线程打印 B，⼀个线程打印 C，⼀共打印 n 轮。

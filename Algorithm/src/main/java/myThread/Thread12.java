@@ -1,4 +1,4 @@
-package Aabs;
+package myThread;
 
 
 //问题描述：写两个线程打印 1-100，⼀个线程打印奇数，⼀个线程打印偶数。

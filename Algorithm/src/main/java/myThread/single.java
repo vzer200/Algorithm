@@ -1,6 +1,4 @@
-package Aabs;
-
-import DemoTest.Singleton;
+package myThread;
 
 public class single {
 

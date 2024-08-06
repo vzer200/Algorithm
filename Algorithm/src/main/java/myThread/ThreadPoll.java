@@ -1,8 +1,7 @@
-package Aabs;
+package myThread;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +53,7 @@ public class ThreadPoll{
 
 
 
+/*
 class BlockingQueue<T>{
 
     //手撕阻塞队列
@@ -114,6 +114,58 @@ class BlockingQueue<T>{
         }
     }
 
+
+    public int getCapacity() {
+        return capacity;
+    }
+}
+
+*/
+
+class BlockingQueue<T>{
+    private Deque<T> queue = new ArrayDeque<>();
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition fullWait = lock.newCondition();
+    private Condition emptyWait = lock.newCondition();
+    private int capacity;
+
+    public BlockingQueue(int capacity){
+        this.capacity = capacity;
+    }
+
+    public T take(){
+        lock.lock();
+        try {
+            while(queue.isEmpty()){
+                try {
+                    emptyWait.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            T head = queue.removeFirst();
+            fullWait.signal();
+            return head;
+        }finally {
+            lock.unlock();
+        }
+    }
+    public void put(T element){
+        lock.lock();
+        try{
+            while(queue.size()==capacity){
+                try {
+                    fullWait.await();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            queue.addLast(element);
+            emptyWait.signal();
+        }  finally {
+            lock.unlock();
+        }
+    }
 
     public int getCapacity() {
         return capacity;

@@ -1,4 +1,4 @@
-package Aabs;
+package myThread;
 
 public class Josephus {
     /*
