@@ -84,14 +84,6 @@ class Thread02PrintReentrantLock {
     }
 
 
-    public int getCount() {
-        return count;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
 }
 
 class Thread02PrintSynchronized {
