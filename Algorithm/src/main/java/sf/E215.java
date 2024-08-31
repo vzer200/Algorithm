@@ -1,7 +1,5 @@
 package sf;
 
-import heap.MinHeap;
-
 import java.util.PriorityQueue;
 
 public class E215 {
@@ -15,16 +13,14 @@ public class E215 {
     }
 
     public static int findKthLargest(int[] nums, int k) {
-        PriorityQueue<Integer> queue = new PriorityQueue<>((a,b)->b-a);
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> o1-o2);
         for (int i = 0; i < nums.length; i++) {
             queue.add(nums[i]);
         }
-        for (int i = 0; i < k-1; i++) {
+        for (int i = 0 ;i<k-1;i++){
             queue.poll();
         }
-
         return queue.poll();
-
     }
 
 }
