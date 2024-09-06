@@ -91,32 +91,43 @@ public class E02 {
 
 
 
-    public ListNode addTwoNumbers3(ListNode l1, ListNode l2) {
-        //预先指针
-       ListNode cur = new ListNode(-1);
-       ListNode pre = cur;
-       int z = 0;
-       while(l1!=null||l2!=null){
-           int x = l1 ==null?0:l1.val;
-           int y = l2 ==null?0:l2.val;
-           int sum = x+y+z;
-           z = sum/10;
-           sum = sum%10;
-           cur.next = new ListNode(sum);
-           cur =cur.next;
-           if (l1!=null){
-               l1 = l1.next;
-           }
-           if (l2!=null){
-               l2 = l2.next;
-           }
-       }
+    public static ListNode addTwoNumbers3(ListNode l1, ListNode l2) {
+        int z = 0;
+        ListNode dummy = new ListNode(-1);
+        ListNode curr = dummy;
+        while(l1!=null || l2!=null){
+            int x = l1 == null ? 0 : l1.val;
+            int y = l2 == null ? 0 : l2.val;
+            int sum = x+y+z;
+            z = sum/10;
+            sum = sum%10;
+            ListNode node = new ListNode(sum);
+            curr.next = node;
+            curr = curr.next;
+            if(l1!=null){
+                l1 = l1.next;
+            }
+            if(l2!=null){
+                l2 = l2.next;
+            }
+        }
 
-       if (z!=0){
-           cur.next = new ListNode(z);
-       }
+        if(z!=0){
+            ListNode add = new ListNode(z);
+            curr.next = add;
+        }
 
-       return pre.next;
+        return dummy.next;
+    }
+
+    public static void main(String[] args) {
+        ListNode l1 = new ListNode(2);
+        l1.next = new ListNode(4);
+        l1.next.next = new ListNode(3);
+        ListNode l2 = new ListNode(5);
+        l2.next = new ListNode(6);
+        l2.next.next = new ListNode(4);
+        addTwoNumbers3(l1,l2);
     }
 
 }
