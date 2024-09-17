@@ -20,49 +20,51 @@ public class TC_01 {
     public static int minMagicSteps(int k, int n, String s) {
         int minSteps = Integer.MAX_VALUE;
 
-        // 遍历所有可能的目标字符 '0' 到 '9'
         for (char target = '0'; target <= '9'; target++) {
-            int[] count = new int[10];
-            int currentSteps = 0;
+            int[] cost = new int[n];
 
-            // 初始化窗口
-            for (int i = 0; i < k; i++) {
-                int diff = Math.abs(s.charAt(i) - target);
-                count[s.charAt(i) - '0']++;
-                currentSteps += diff;
+            for (int i = 0; i < n; i++) {
+                char c = s.charAt(i);
+                if (c == target) {
+                    cost[i] = 0;
+                } else if (c < target) {
+                    if (c == '9') {
+                        cost[i] = Integer.MAX_VALUE;
+                    } else {
+                        cost[i] = target - c;
+                    }
+                } else {
+                    if (c == '0') {
+                        cost[i] = Integer.MAX_VALUE;
+                    } else {
+                        cost[i] = c - target;
+                    }
+                }
             }
 
-            if (isWindowValid(count, target)) {
-                minSteps = Math.min(minSteps, currentSteps);
-            }
+            int totalCost = 0;
+            int invalidCount = 0;
+            for (int i = 0; i < n; i++) {
+                if (cost[i] == Integer.MAX_VALUE) {
+                    invalidCount++;
+                } else {
+                    totalCost += cost[i];
+                }
 
-            // 滑动窗口
-            for (int i = k; i < n; i++) {
-                // 移出窗口的字符
-                int outChar = s.charAt(i - k) - '0';
-                currentSteps -= Math.abs(s.charAt(i - k) - target);
-                count[outChar]--;
+                if (i >= k) {
+                    if (cost[i - k] == Integer.MAX_VALUE) {
+                        invalidCount--;
+                    } else {
+                        totalCost -= cost[i - k];
+                    }
+                }
 
-                // 加入窗口的字符
-                int inChar = s.charAt(i) - '0';
-                currentSteps += Math.abs(s.charAt(i) - target);
-                count[inChar]++;
-
-                // 检查窗口是否合法并更新最小步骤
-                if (isWindowValid(count, target)) {
-                    minSteps = Math.min(minSteps, currentSteps);
+                if (i >= k - 1 && invalidCount == 0) {
+                    minSteps = Math.min(minSteps, totalCost);
                 }
             }
         }
 
         return minSteps;
-    }
-
-    // 检查窗口是否合法
-    private static boolean isWindowValid(int[] count, char target) {
-        // 检查目标字符是否可以合法转换
-        if (target == '0' && count[0] > 0) return false; // '0' 不能减少
-        if (target == '9' && count[9] > 0) return false; // '9' 不能增加
-        return true;
     }
 }
